@@ -1,4 +1,4 @@
-package com.example.androidtodolistapp;
+package com.example.androidtodolistapp.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,9 @@ import android.os.Handler;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+
+import com.example.androidtodolistapp.Activities.MainActivity;
+import com.example.androidtodolistapp.R;
 
 public class SplashActivity extends AppCompatActivity {
     Animation anim;
@@ -35,7 +38,7 @@ public class SplashActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     }
-                },1000);
+                },2000);
 
                 // MainActivity.class is the activity to go after showing the splash screen.
             }

@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">AndroidToDoListApp</string>
     <string name="myTasks">My Tasks</string>
-    <string name="new_task">New task</string>
+    <string name="new_task">New taskData</string>
     <string name="save">Save</string>
 </resources>

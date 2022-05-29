@@ -18,10 +18,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:paddingStart="8dp"
             android:buttonTint="@color/blue"
             android:checked="true"
-            tools:text="Go to the market and bring vegetables immediately today."/>
+            android:paddingStart="8dp"
+            tools:text="Go to the market and bring vegetables immediately today." />
 
     </RelativeLayout>
 

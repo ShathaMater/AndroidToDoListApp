@@ -4,23 +4,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.androidtodolistapp.MainActivity;
-import com.example.androidtodolistapp.Model.ToDoModel;
+import com.example.androidtodolistapp.DAOTask;
+import com.example.androidtodolistapp.Model.TaskData;
 import com.example.androidtodolistapp.R;
 
-import java.util.List;
+//import com.google.android.gms.tasks.TaskData;
+
+
+import java.util.ArrayList;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
-    private List<ToDoModel> toDoModelList;
-    private MainActivity activity;
+    private ArrayList<TaskData> todoList;
 
-    public  ToDoAdapter(MainActivity activity){
-        this.activity=activity;
+    public ToDoAdapter()
+    {
+
     }
 
     @NonNull
@@ -32,23 +36,37 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ToDoAdapter.ViewHolder holder, int position) {
-        ToDoModel item = toDoModelList.get(position);
+        TaskData item = todoList.get(position);
         holder.task.setText(item.getTask());
         holder.task.setChecked(toBoolean(item.getStatus()));
+        holder.task.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                DAOTask dao = new DAOTask();
+                if (isChecked) {
+//                    String k = item.getId();
+//                    String updated_task =  item.getTask();
+//                    int updated_status =  1;
+//                    HashMap<>
+//                    dao.updateTask(k,)
+
+                } else {
+                }
+            }
+        });
 
     }
     private boolean toBoolean(int n){
         return n!=0;
     }
 
-    public void setTask(List<ToDoModel> toDoModelList){
-        this.toDoModelList=toDoModelList;
-        notifyDataSetChanged();
+    public void setTasks(ArrayList<TaskData> taskList){
+        this.todoList= taskList;
     }
 
     @Override
     public int getItemCount() {
-        return toDoModelList.size();
+        return todoList.size();
     }
 
 

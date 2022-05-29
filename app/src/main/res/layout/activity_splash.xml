@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue"
-    tools:context=".SplashActivity">
+    tools:context=".Activities.SplashActivity">
 
 
 
@@ -14,7 +14,7 @@
         android:layout_width="310dp"
         android:layout_height="200dp"
         android:layout_centerInParent="true"
-        android:src="@drawable/list"
+        android:src="@drawable/logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
