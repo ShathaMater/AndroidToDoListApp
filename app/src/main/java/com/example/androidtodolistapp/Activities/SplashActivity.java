@@ -21,7 +21,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        getSupportActionBar().hide();
+
         imageView = (ImageView) findViewById(R.id.SplashScreenImage); // Declare an imageView to show the animation.
         anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.side); // Create the animation.
         anim.setAnimationListener(new Animation.AnimationListener() {
@@ -31,7 +31,7 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), RegisterLoginContainerActivity.class);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {

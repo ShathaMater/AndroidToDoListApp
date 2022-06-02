@@ -20,6 +20,8 @@ import com.example.androidtodolistapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
@@ -32,17 +34,18 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     DAOTask dao;
     ToDoAdapter tasksAdapter;
     ArrayList<TaskData> tasksList = new ArrayList<>();
+    FirebaseAuth firebaseAuth;
+    FirebaseUser firebaseUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getSupportActionBar().hide();
+        firebaseAuth = FirebaseAuth.getInstance();
         viewsInflate();
-
         dao = new DAOTask();
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,28 +64,24 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     private void loadData() {
 
        tasksList.clear();
-       Task<DataSnapshot> taskData =  dao.databaseReference.get();
+//        String id = firebaseUser.getUid();
+          String id = firebaseAuth.getUid();
+
+//       String id = firebaseAuth.getCurrentUser().getUid();
+       Task<DataSnapshot> taskData =  dao.databaseReference.child(id).get();
        taskData.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
            @Override
            public void onComplete(@NonNull Task<DataSnapshot> taskData) {
-
                if(taskData.isSuccessful()){
                    Iterable<DataSnapshot> data = taskData.getResult().getChildren();
-
                    for(DataSnapshot snapshot : data){
                        TaskData t = snapshot.getValue(TaskData.class);
                        tasksList.add(t);
                    }
-
-//                   for(TaskData t : tasksList){
-//                       Log.d("tag","onComplete : "+t);
-//                   }
-
                    tasksAdapter= new ToDoAdapter();
                    tasksAdapter.setTasks(tasksList);
                    tasksRecyclerView.setAdapter(tasksAdapter);
                    tasksRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
                }else{
                    String error_message = taskData.getException().getMessage();
                    Toast.makeText(MainActivity.this, "Error"+error_message, Toast.LENGTH_SHORT).show();
