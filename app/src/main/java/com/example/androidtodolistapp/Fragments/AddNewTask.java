@@ -25,6 +25,7 @@ import com.example.androidtodolistapp.R;
 import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,8 @@ public class AddNewTask extends BottomSheetDialogFragment {
 //    boolean isUpdate = false;
 //    final boolean finalIsUpdate = isUpdate;
     DAOTask dao ;
+    FirebaseAuth firebaseAuth;
+
 
     public static AddNewTask newInstance(){
         return new AddNewTask();
@@ -112,7 +115,9 @@ public class AddNewTask extends BottomSheetDialogFragment {
 
         dao = new DAOTask();
         String text = newTaskText.getText().toString();
-        String id = dao.databaseReference.push().getKey();
+//        String id = dao.databaseReference.push().getKey();
+        String id = firebaseAuth.getCurrentUser().getUid();
+
         TaskData taskData = new TaskData(id,text);
 
         dao.databaseReference.child(id).setValue(taskData).addOnCompleteListener(new OnCompleteListener<Void>() {

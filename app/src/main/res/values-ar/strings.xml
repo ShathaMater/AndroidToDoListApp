@@ -4,4 +4,10 @@
     <string name="myTasks">مهامي</string>
     <string name="new_task">مهمة جديدة</string>
     <string name="save">حفظ</string>
+    <string name="first_name">الإسم الأول</string>
+    <string name="last_name">الإسم الثاني</string>
+    <string name="login">تسجيل دخول</string>
+    <string name="register">إنشاء حساب</string>
+    <string name="email">الايميل</string>
+    <string name="password">كلمة المرور</string>
 </resources>
