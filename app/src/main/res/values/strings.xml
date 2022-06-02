@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">AndroidToDoListApp</string>
     <string name="myTasks">My Tasks</string>
-    <string name="new_task">New taskData</string>
+    <string name="new_task">New task</string>
     <string name="save">Save</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last Name</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
