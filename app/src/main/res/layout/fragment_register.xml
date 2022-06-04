@@ -7,29 +7,28 @@
     tools:context=".Fragments.RegisterFragment"
     android:padding="18dp">
 
-    <TextView
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="200dp"
+        android:src="@drawable/s"
+        android:scaleType="fitXY"
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="@string/register"
-        android:textColor="@color/blue"
-        android:textSize="40dp"
-        android:textStyle="bold"
+        android:layout_marginTop="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    </TextView>
+    </ImageView>
 
     <EditText
         android:id="@+id/register_et_firstName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="20dp"
         android:inputType="text"
         android:hint="@string/first_name"
         android:textSize="18dp"
+        android:background="@drawable/shape1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -39,10 +38,11 @@
         android:id="@+id/register_et_lastName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:inputType="text"
         android:hint="@string/last_name"
         android:textSize="18dp"
+        android:background="@drawable/shape1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_et_firstName" />
@@ -51,10 +51,11 @@
         android:id="@+id/register_et_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:inputType="textEmailAddress"
         android:hint="@string/email"
         android:textSize="18dp"
+        android:background="@drawable/shape1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_et_lastName" />
@@ -64,10 +65,11 @@
         android:id="@+id/register_et_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:hint="@string/password"
         android:inputType="textPassword"
         android:textSize="18dp"
+        android:background="@drawable/shape1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_et_email" />
@@ -76,10 +78,11 @@
         android:id="@+id/btn_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="@color/blue"
         android:text="@string/register"
         android:textSize="18dp"
+        android:background="@drawable/shape1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_et_password">
@@ -89,7 +92,7 @@
         android:id="@+id/tv_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:textSize="18dp"
         android:padding="10dp"
         android:text="Already have an account? Login now"

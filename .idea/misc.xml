@@ -3,18 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/AndroidToDoListApp/app/src/main/res/drawable/button_background.xml" value="0.1" />
-        <entry key="..\:/AndroidToDoListApp/app/src/main/res/layout/activity_login.xml" value="0.16666666666666666" />
-        <entry key="..\:/AndroidToDoListApp/app/src/main/res/layout/activity_main.xml" value="0.12685185185185185" />
-        <entry key="..\:/AndroidToDoListApp/app/src/main/res/layout/activity_register.xml" value="0.13385416666666666" />
-        <entry key="..\:/AndroidToDoListApp/app/src/main/res/layout/activity_register_login_container.xml" value="0.13385416666666666" />
-        <entry key="..\:/AndroidToDoListApp/app/src/main/res/layout/activity_splash.xml" value="0.12685185185185185" />
-        <entry key="..\:/AndroidToDoListApp/app/src/main/res/layout/fragment_login.xml" value="0.1" />
-        <entry key="..\:/AndroidToDoListApp/app/src/main/res/layout/fragment_register.xml" value="0.13177083333333334" />
-        <entry key="..\:/AndroidToDoListApp/app/src/main/res/layout/new_task.xml" value="0.1" />
-        <entry key="..\:/AndroidToDoListApp/app/src/main/res/layout/task_layout.xml" value="0.13703703703703704" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidToDoListApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2005" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidToDoListApp/app/src/main/res/drawable/ic_baseline_delete.xml" value="0.173" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidToDoListApp/app/src/main/res/drawable/ic_baseline_edit.xml" value="0.173" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidToDoListApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2005" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidToDoListApp/app/src/main/res/drawable/shape1.xml" value="0.173" />
         <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidToDoListApp/app/src/main/res/layout/activity_main.xml" value="0.1793478260869565" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidToDoListApp/app/src/main/res/layout/activity_register_login_container.xml" value="0.264" />
         <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidToDoListApp/app/src/main/res/layout/activity_splash.xml" value="0.16751269035532995" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidToDoListApp/app/src/main/res/layout/fragment_login.xml" value="0.2" />
+        <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidToDoListApp/app/src/main/res/layout/fragment_register.xml" value="0.12" />
         <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidToDoListApp/app/src/main/res/layout/new_task.xml" value="0.1793478260869565" />
         <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidToDoListApp/app/src/main/res/layout/splash_screen.xml" value="0.1793478260869565" />
         <entry key="..\:/Users/lenovo/AndroidStudioProjects/AndroidToDoListApp/app/src/main/res/layout/task_layout.xml" value="0.1793478260869565" />

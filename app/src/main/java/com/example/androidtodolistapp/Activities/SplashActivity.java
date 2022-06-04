@@ -38,7 +38,7 @@ public class SplashActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     }
-                },2000);
+                },1000);
 
                 // MainActivity.class is the activity to go after showing the splash screen.
             }
