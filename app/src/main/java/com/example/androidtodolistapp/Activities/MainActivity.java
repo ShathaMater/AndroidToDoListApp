@@ -2,6 +2,7 @@ package com.example.androidtodolistapp.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +18,7 @@ import com.example.androidtodolistapp.Fragments.AddNewTask;
 import com.example.androidtodolistapp.Interfaces.DialogCloseListener;
 import com.example.androidtodolistapp.Model.TaskData;
 import com.example.androidtodolistapp.R;
+import com.example.androidtodolistapp.RecyclerItemTouchHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -27,7 +29,7 @@ import com.google.firebase.database.DataSnapshot;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class MainActivity extends AppCompatActivity implements DialogCloseListener {
+public class MainActivity extends AppCompatActivity implements DialogCloseListener, ToDoAdapter.OnItemClickListener {
 
     private RecyclerView tasksRecyclerView;
     private FloatingActionButton fab;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
     ArrayList<TaskData> tasksList = new ArrayList<>();
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
+    private TaskData updatTask=null;
 
 
     @Override
@@ -45,11 +48,15 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
         firebaseAuth = FirebaseAuth.getInstance();
         viewsInflate();
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new RecyclerItemTouchHelper(tasksAdapter));
+        itemTouchHelper.attachToRecyclerView(tasksRecyclerView);
+
         dao = new DAOTask();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddNewTask.newInstance().show(getSupportFragmentManager(), AddNewTask.TAG);
+                AddNewTask.newInstance(updatTask).show(getSupportFragmentManager(), AddNewTask.TAG);
             }
         });
 
@@ -63,47 +70,55 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
     private void loadData() {
 
-       tasksList.clear();
+        tasksList.clear();
 //        String id = firebaseUser.getUid();
-          String id = firebaseAuth.getUid();
+        String id = firebaseAuth.getUid();
 
 //       String id = firebaseAuth.getCurrentUser().getUid();
-       Task<DataSnapshot> taskData =  dao.databaseReference.child(id).get();
-       taskData.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-           @Override
-           public void onComplete(@NonNull Task<DataSnapshot> taskData) {
-               if(taskData.isSuccessful()){
-                   Iterable<DataSnapshot> data = taskData.getResult().getChildren();
-                   for(DataSnapshot snapshot : data){
-                       TaskData t = snapshot.getValue(TaskData.class);
-                       tasksList.add(t);
-                   }
-                   tasksAdapter= new ToDoAdapter();
-                   tasksAdapter.setTasks(tasksList);
-                   tasksRecyclerView.setAdapter(tasksAdapter);
-                   tasksRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-               }else{
-                   String error_message = taskData.getException().getMessage();
-                   Toast.makeText(MainActivity.this, "Error"+error_message, Toast.LENGTH_SHORT).show();
-               }
-           }
-       });
+        Task<DataSnapshot> taskData = dao.databaseReference.child(id).get();
+        taskData.addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> taskData) {
+                if (taskData.isSuccessful()) {
+                    Iterable<DataSnapshot> data = taskData.getResult().getChildren();
+                    for (DataSnapshot snapshot : data) {
+                        TaskData t = snapshot.getValue(TaskData.class);
+                        tasksList.add(t);
+                    }
+                    initAdapter(tasksList);
+                } else {
+                    String error_message = taskData.getException().getMessage();
+                    Toast.makeText(MainActivity.this, "Error" + error_message, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void initAdapter(ArrayList<TaskData> taskData) {
+        tasksAdapter = new ToDoAdapter(this);
+        tasksAdapter.setTasks(tasksList);
+        tasksRecyclerView.setAdapter(tasksAdapter);
+        tasksRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
 
     @Override
-    public void handleDialogClose(DialogInterface dialog){
+    public void handleDialogClose(DialogInterface dialog) {
 
         Collections.reverse(tasksList);
-        Log.d("tag","revers : "+tasksList);
+        Log.d("tag", "revers : " + tasksList);
         tasksAdapter.setTasks(tasksList);
         tasksAdapter.notifyDataSetChanged();
         loadData();
     }
 
-    public void viewsInflate(){
+    public void viewsInflate() {
         tasksRecyclerView = findViewById(R.id.tasksRecyclerView);
         fab = findViewById(R.id.fab);
 
     }
 
+    @Override
+    public void onItemClick(TaskData data, int positions) {
+            updatTask = data;
+    }
 }

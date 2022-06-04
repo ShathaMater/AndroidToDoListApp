@@ -1,6 +1,8 @@
 package com.example.androidtodolistapp.Model;
 
-public class TaskData {
+import java.io.Serializable;
+
+public class TaskData implements Serializable {
     private int status;
     private String id, task;
 

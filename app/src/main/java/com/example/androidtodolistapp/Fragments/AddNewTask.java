@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -18,16 +19,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
+import com.example.androidtodolistapp.Adapter.ToDoAdapter;
 import com.example.androidtodolistapp.DAOTask;
 import com.example.androidtodolistapp.Interfaces.DialogCloseListener;
 import com.example.androidtodolistapp.Model.TaskData;
 import com.example.androidtodolistapp.R;
 import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class AddNewTask extends BottomSheetDialogFragment {
@@ -35,15 +39,20 @@ public class AddNewTask extends BottomSheetDialogFragment {
     public static final String TAG = "ActionBottomDialog";
     private EditText newTaskText;
     private Button newTaskSaveButton;
-//    public static List<TaskData> tasksList = new ArrayList<>();
-//    boolean isUpdate = false;
-//    final boolean finalIsUpdate = isUpdate;
-    DAOTask dao ;
-    FirebaseAuth firebaseAuth;
+    public static List<TaskData> tasksList = new ArrayList<>();
+    boolean isUpdate = false;
+
+    private DAOTask dao;
+    private FirebaseAuth firebaseAuth;
+    private TaskData updatTask = null;
 
 
-    public static AddNewTask newInstance(){
-        return new AddNewTask();
+    public static AddNewTask newInstance(TaskData updatTask) {
+        AddNewTask fragment = new AddNewTask();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("task", updatTask);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
@@ -69,17 +78,17 @@ public class AddNewTask extends BottomSheetDialogFragment {
         newTaskText = view.findViewById(R.id.newTaskText);
         newTaskSaveButton = view.findViewById(R.id.newTaskButton);
 
-
-//        final Bundle bundle = getArguments();
-//        if(bundle != null){
-//            isUpdate = true;
-//            String task = bundle.getString("task");
-//            newTaskText.setText(task);
-//            assert task != null;
-//            if(task.length()>0)
-//                newTaskSaveButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white));
-//        }
-
+//
+        final Bundle bundle = getArguments();
+        if (bundle != null) {
+            isUpdate = true;
+            updatTask = (TaskData) bundle.getSerializable("task");
+            if (updatTask != null) {
+                newTaskText.setText(updatTask.getTask());
+                newTaskSaveButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white));
+            }
+        }
+//
 
         newTaskText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -88,11 +97,10 @@ public class AddNewTask extends BottomSheetDialogFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.toString().equals("")){
+                if (s.toString().equals("")) {
                     newTaskSaveButton.setEnabled(false);
                     newTaskSaveButton.setTextColor(Color.GRAY);
-                }
-                else{
+                } else {
                     newTaskSaveButton.setEnabled(true);
                     newTaskSaveButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue));
                 }
@@ -102,28 +110,79 @@ public class AddNewTask extends BottomSheetDialogFragment {
             public void afterTextChanged(Editable s) {
             }
         });
-
+        boolean finalIsUpdate = isUpdate;
         newTaskSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addTask();
+
+                addorupdateTask();
+            }
+
+
+            private void addorupdateTask() {
+                if (finalIsUpdate && updatTask != null) {
+                    updateTask(updatTask);
+                } else {
+                    addTask();
+                }
+            }
+
+            private void updateTask(TaskData taskData) {
+                dao = new DAOTask();
+                String text = newTaskText.getText().toString();
+                String id = firebaseAuth.getCurrentUser().getUid();
+                HashMap<String, Object> hashMap = new HashMap<>();
+                hashMap.put("update Task ", text);
+                dao.databaseReference.child("Tasks").child(id)
+                        .child(taskData.getId())
+                        .updateChildren(hashMap).
+                        addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        updatTask = null;
+                                        //btn add
+                                        Toast.makeText(getContext(), "Taskdata has been updated", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        String errorMessage = task.getException().getMessage();
+                                        Toast.makeText(getContext(), "Taskdata hasnt updated updated" + errorMessage, Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                        );
             }
         });
     }
+    /*
+     *  app
+     *
+     *    Tasks
+     *       uId
+     *         auto id (push key)
+     *               object task
+     *
+     *     Users
+     *       Uid
+     *           object User bean email
+     * هي الفكرة ي عبير هان
+     *
+     *
+     * */
 
-    public void addTask(){
+    public void addTask() {
 
         dao = new DAOTask();
         String text = newTaskText.getText().toString();
-//        String id = dao.databaseReference.push().getKey();
-        String id = firebaseAuth.getCurrentUser().getUid();
 
-        TaskData taskData = new TaskData(id,text);
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String mKey = dao.databaseReference.child("Tasks").child(userId).push().getKey();
+        TaskData taskData = new TaskData(mKey, text);
 
-        dao.databaseReference.child(id).setValue(taskData).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull com.google.android.gms.tasks.Task<Void> task) {
-//                Toast.makeText(getContext(), "TaskData hase been added",Toast.LENGTH_LONG).show();
+        dao.databaseReference.child("Tasks").child(userId).push().setValue(taskData).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(getContext(), "TaskData hase been added", Toast.LENGTH_LONG).show();
+
+
+            } else {
+                String errorMessage = task.getException().getMessage();
+                Toast.makeText(getContext(), "TaskData hase been failed" + errorMessage, Toast.LENGTH_LONG).show();
             }
         }).addOnCanceledListener(new OnCanceledListener() {
             @Override
@@ -135,12 +194,11 @@ public class AddNewTask extends BottomSheetDialogFragment {
     }
 
     @Override
-    public void onDismiss(@NonNull DialogInterface dialog){
+    public void onDismiss(@NonNull DialogInterface dialog) {
         Activity activity = getActivity();
-        if(activity instanceof DialogCloseListener)
-            ((DialogCloseListener)activity).handleDialogClose(dialog);
+        if (activity instanceof DialogCloseListener)
+            ((DialogCloseListener) activity).handleDialogClose(dialog);
     }
-
 
 }
 
